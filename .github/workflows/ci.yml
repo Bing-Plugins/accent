@@ -85,13 +85,13 @@ jobs:
       - name: Coverage report
         run: mix coveralls.post --token ${{ secrets.COVERALLS_REPO_TOKEN }} --name 'github-actions' --branch ${{ github.ref }} --committer ${{ github.actor }} --sha ${{ github.sha }}
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
+      - name: Build Docker image
+        run: |
+          docker build -t myapp .
+          docker tag accent:latest mirego/accent:latest
+
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
         with:
-          images: |
-            mirego/accent
-            ghcr.io/mirego/accent
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=semver,pattern={{raw}}
+          name: myapp-artifact
+          path: dist/
