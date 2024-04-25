@@ -85,11 +85,6 @@ jobs:
       - name: Coverage report
         run: mix coveralls.post --token ${{ secrets.COVERALLS_REPO_TOKEN }} --name 'github-actions' --branch ${{ github.ref }} --committer ${{ github.actor }} --sha ${{ github.sha }}
 
-      - name: Build Docker image
-        run: |
-          docker build -t myapp .
-          docker tag accent:latest mirego/accent:latest
-
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
